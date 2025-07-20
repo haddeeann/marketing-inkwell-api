@@ -10,4 +10,5 @@ python manage.py collectstatic --noinput
 # apply migrations
 python manage.py migrate
 
-python inkwell_api/createsuperuser.py
+python -m inkwell_api.createsuperuser
+
