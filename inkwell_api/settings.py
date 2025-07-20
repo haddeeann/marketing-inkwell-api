@@ -58,10 +58,8 @@ MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
 ]
 
-# Allow requests from your frontend
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:5173",  # Vite dev server
-]
+cors_origins = os.getenv("CORS_ALLOWED_ORIGINS", "")
+CORS_ALLOWED_ORIGINS = cors_origins.split(",") if cors_origins else []
 
 ROOT_URLCONF = 'inkwell_api.urls'
 
