@@ -1,0 +1,17 @@
+# render.yaml
+services:
+  - type: web
+    name: inkwell-api
+    env: python
+    buildCommand: "./build.sh"
+    startCommand: "gunicorn inkwell_api.wsgi:application"
+    envVars:
+      - key: DJANGO_SETTINGS_MODULE
+        value: inkwell_api.settings
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DEBUG
+        value: false
+
+databases:
+  - name: inkwell-db
