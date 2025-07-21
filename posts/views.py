@@ -79,8 +79,6 @@ class PostViewSet(viewsets.ModelViewSet):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
     def perform_create(self, serializer):
-        print("User creating post:", self.request.user)
-        print("Is authenticated:", self.request.user.is_authenticated)
         clean_html = bleach.clean(
             self.request.data.get("content", ""),
             tags=[
