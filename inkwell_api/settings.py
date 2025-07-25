@@ -43,7 +43,8 @@ INSTALLED_APPS = [
     'users',
     "rest_framework",
     'corsheaders',
-    'notes'
+    'notes',
+    'taggit'
 ]
 
 MIDDLEWARE = [
