@@ -48,6 +48,10 @@ class PostViewSet(viewsets.ModelViewSet):
         serializer = self.get_serializer(posts, many=True)
         return Response(serializer.data)
 
+    def retrieve(self, request, *args, **kwargs):
+        """Override retrieve to add debugging"""
+        return super().retrieve(request, *args, **kwargs)
+
     def get_object(self):
         obj = super().get_object()
         if obj.published:

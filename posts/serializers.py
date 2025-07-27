@@ -9,7 +9,7 @@ User = get_user_model()
 
 class PostSerializer(TaggitSerializer, serializers.ModelSerializer):
     author = serializers.SerializerMethodField(read_only=True)
-    tags = TagListSerializerField()
+    tags = TagListSerializerField(required=False)
 
     class Meta:
         model = Post
