@@ -94,4 +94,4 @@ class PostViewSet(viewsets.ModelViewSet):
         print("USER:", self.request.user)
         print("DATA:", self.request.data)
         # Assign the logged-in user to the note
-        serializer.save(author=self.request.user, content=clean_html, slug=slugify(self.request.data.get('title', '')))
+        serializer.save(author=self.request.user, content=clean_html, slug=slugify(self.request.data.get('title', '')[:50]))
