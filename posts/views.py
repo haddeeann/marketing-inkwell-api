@@ -11,6 +11,20 @@ from rest_framework.exceptions import PermissionDenied
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 
+import logging
+
+logger = logging.getLogger(__name__)
+
+
+def generate_unique_slug(model, title, slug_field='slug'):
+    base = slugify(title)[:50] or "post"
+    slug = base
+    counter = 1
+    while model.objects.filter(**{slug_field: slug}).exists():
+        slug = f"{base}-{counter}"
+        counter += 1
+    return slug
+
 
 @method_decorator(csrf_exempt, name='dispatch')
 class PostViewSet(viewsets.ModelViewSet):
@@ -83,15 +97,21 @@ class PostViewSet(viewsets.ModelViewSet):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
     def perform_create(self, serializer):
-        clean_html = bleach.clean(
-            self.request.data.get("content", ""),
-            tags=[
-                "p", "strong", "em", "h1", "h2", "h3", "h4", "ul", "ol", "li", "blockquote", "code", "pre", "br",
-            ],
-            attributes={},
-            strip=True,
-        )
-        print("USER:", self.request.user)
-        print("DATA:", self.request.data)
-        # Assign the logged-in user to the note
-        serializer.save(author=self.request.user, content=clean_html, slug=slugify(self.request.data.get('title', '')[:50]))
+        try:
+            clean_html = bleach.clean(
+                self.request.data.get("content", ""),
+                tags=[
+                    "p", "strong", "em", "h1", "h2", "h3", "h4", "ul", "ol", "li", "blockquote", "code", "pre", "br",
+                ],
+                attributes={},
+                strip=True,
+            )
+            print("USER:", self.request.user)
+            print("DATA:", self.request.data)
+            # Assign the logged-in user to the note
+            serializer.save(author=self.request.user, content=clean_html,
+                            slug=generate_unique_slug(Post, self.request.data.get('title', '')[:50]))
+        except Exception as e:
+            logger.exception("Failed to create Post(title=%r) for user %r", serializer.validated_data.get('title'),
+                             self.request.user)
+            raise
