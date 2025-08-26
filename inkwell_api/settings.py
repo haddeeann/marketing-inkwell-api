@@ -13,6 +13,8 @@ from dotenv import load_dotenv
 from pathlib import Path
 import dj_database_url
 import os
+from datetime import timedelta
+from django.conf import settings
 load_dotenv()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -141,6 +143,31 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework_simplejwt.authentication.JWTAuthentication'
     ]
+}
+
+SIMPLE_JWT = {
+    # Lifetimes: short access, longer refresh
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=30),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=14),
+
+    # If you want refresh-rotation (more secure; client must store new refresh):
+    # "ROTATE_REFRESH_TOKENS": True,
+    # "BLACKLIST_AFTER_ROTATION": True,
+
+    # Header format your client uses: "Authorization: Bearer <token>"
+    "AUTH_HEADER_TYPES": ("Bearer",),
+
+    # If your server clocks might drift (containers, etc.)
+    "LEEWAY": 30,  # seconds
+
+    # Crypto; defaults are fine, but keeping explicit is nice
+    # "ALGORITHM": "HS256",
+    # "SIGNING_KEY": settings.SECRET_KEY,
+
+    # Hardening options you can enable later:
+    # "UPDATE_LAST_LOGIN": True,
+    # "AUDIENCE": "inkwell",
+    # "ISSUER": "https://api.your-domain.tld",
 }
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
