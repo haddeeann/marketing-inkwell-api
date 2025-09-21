@@ -15,6 +15,8 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.urls import path
+from .uploads import ImageUploadView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -23,5 +25,6 @@ urlpatterns = [
     path('api/posts/', include('posts.urls')),     # /api/posts/
     path('api/notes/', include('notes.urls')),     # /api/notes/
     path('api/auth/', include('users.urls')),      # /api/auth/login/
+    path("api/uploads/images/", ImageUploadView.as_view(), name="upload-image"),
 ]
 

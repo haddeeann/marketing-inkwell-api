@@ -23,6 +23,15 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
+AWS_S3_BUCKET = os.getenv("AWS_S3_BUCKET")
+AWS_S3_REGION = os.getenv("AWS_S3_REGION", default="us-east-1")
+AWS_ACCESS_KEY_ID = os.getenv("AWS_ACCESS_KEY_ID")
+AWS_SECRET_ACCESS_KEY = os.getenv("AWS_SECRET_ACCESS_KEY")
+
+# Optional: serve via CDN domain instead of the raw S3 URL
+CDN_PUBLIC_BASE_URL = os.getenv("CDN_PUBLIC_BASE_URL", default=None)  # e.g. "https://img.example.com"
+
+
 SECRET_KEY = os.getenv('SECRET_KEY')
 DEBUG = os.getenv('DEBUG', 'False') == 'True'
 
