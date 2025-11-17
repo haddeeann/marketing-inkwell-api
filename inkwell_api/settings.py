@@ -55,7 +55,8 @@ INSTALLED_APPS = [
     "rest_framework",
     'corsheaders',
     'notes',
-    'taggit'
+    'taggit',
+    'media'
 ]
 
 MIDDLEWARE = [
